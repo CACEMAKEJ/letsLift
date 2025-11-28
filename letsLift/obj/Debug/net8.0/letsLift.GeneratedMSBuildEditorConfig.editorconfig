@@ -17,3 +17,7 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = /home/manin/RiderProjects/letsLift/letsLift
 build_property._RazorSourceGeneratorDebug = 
+
+[/home/manin/RiderProjects/letsLift/letsLift/Views/Bookings/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQm9va2luZ3MvaW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
