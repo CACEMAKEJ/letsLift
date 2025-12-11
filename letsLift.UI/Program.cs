@@ -1,10 +1,25 @@
 using LetsLift.UI.Components;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddBlazoredLocalStorage();
+
+
+
+builder.Services.AddHttpClient("Api", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5092/api/");
+});
+
+
+
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<AuthState>();
 
 var app = builder.Build();
 

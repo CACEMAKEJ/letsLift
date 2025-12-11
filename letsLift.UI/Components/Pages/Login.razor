@@ -1,0 +1,50 @@
+@page "/login"
+@inject AuthService Auth
+@inject AuthState AuthState
+@inject NavigationManager Nav
+@rendermode InteractiveServer
+
+<div class="auth-container">
+    <h1 class="title">Let’sLift</h1>
+    <h3 class="subtitle">Sign In</h3>
+
+    @if (error != null)
+    {
+        <p class="error">@error</p>
+    }
+
+    <input @bind="email" placeholder="Email" class="input-box" />
+    <input @bind="password" placeholder="Password" type="password" class="input-box" />
+
+    <button @onclick="HandleLogin" class="primary-btn">Log In</button>
+
+    <p class="switch-text">
+        Don’t have an account?
+        <a @onclick="RedirectToRegister">Sign Up</a>
+    </p>
+</div>
+
+@code {
+    private string email;
+    private string password;
+    private string error;
+
+    private async Task HandleLogin()
+    {
+        var token = await Auth.Login(email, password);
+
+        if (token == null)
+        {
+            error = "Invalid credentials";
+            return;
+        }
+
+        await AuthState.SetTokenAsync(token);
+        Nav.NavigateTo("/");
+    }
+
+    private void RedirectToRegister()
+    {
+        Nav.NavigateTo("/register");
+    }
+}
