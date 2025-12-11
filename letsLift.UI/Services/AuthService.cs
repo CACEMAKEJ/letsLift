@@ -1,16 +1,11 @@
-using System.Net.Http.Json;
-
-public class AuthService
-{
+public class AuthService {
     private readonly IHttpClientFactory _factory;
 
-    public AuthService(IHttpClientFactory factory)
-    {
+    public AuthService(IHttpClientFactory factory) {
         _factory = factory;
     }
 
-    public async Task<string?> Login(string email, string password)
-    {
+    public async Task<string?> Login(string email, string password) {
         var client = _factory.CreateClient("Api");
 
         var response = await client.PostAsJsonAsync("auth/login", new {
@@ -25,8 +20,7 @@ public class AuthService
         return result.Token;
     }
 
-    public async Task<bool> Register(string email, string password, string role)
-    {
+    public async Task<bool> Register(string email, string password, string role) {
         var client = _factory.CreateClient("Api");
 
         var response = await client.PostAsJsonAsync("auth/register", new {
@@ -38,8 +32,7 @@ public class AuthService
         return response.IsSuccessStatusCode;
     }
 
-    private class LoginResult
-    {
+    private class LoginResult {
         public string Token { get; set; }
     }
 }

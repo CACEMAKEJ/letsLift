@@ -1,43 +1,37 @@
-using Blazored.LocalStorage;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Blazored.LocalStorage;
 
-public class AuthState
-{
+public class AuthState {
     private readonly ILocalStorageService _localStorage;
+
+    public AuthState(ILocalStorageService localStorage) {
+        _localStorage = localStorage;
+    }
 
     public string Token { get; private set; }
     public string Role { get; private set; }
 
     public bool IsLoggedIn => !string.IsNullOrEmpty(Token);
 
-    public AuthState(ILocalStorageService localStorage)
-    {
-        _localStorage = localStorage;
-    }
-
-    public async Task LoadAsync()
-    {
+    public async Task LoadAsync() {
         Token = await _localStorage.GetItemAsStringAsync("jwt");
         ParseToken();
     }
 
-    public async Task SetTokenAsync(string token)
-    {
+    public async Task SetTokenAsync(string token) {
         Token = token;
         await _localStorage.SetItemAsStringAsync("jwt", token);
         ParseToken();
     }
 
-    public async Task LogoutAsync()
-    {
+    public async Task LogoutAsync() {
         Token = null;
         Role = null;
         await _localStorage.RemoveItemAsync("jwt");
     }
 
-    private void ParseToken()
-    {
+    private void ParseToken() {
         if (string.IsNullOrEmpty(Token))
             return;
 

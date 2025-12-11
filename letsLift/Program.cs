@@ -12,18 +12,15 @@ builder.Services.AddSwaggerGen();
 
 // MongoDB Config
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDb"));
-builder.Services.AddSingleton<IMongoClient>(sp =>
-{
+builder.Services.AddSingleton<IMongoClient>(sp => {
     var conn = builder.Configuration["MongoDb:ConnectionString"];
     return new MongoClient(conn);
 });
 
 // Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
+    .AddJwtBearer(options => {
+        options.TokenValidationParameters = new TokenValidationParameters {
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateIssuerSigningKey = true,
@@ -43,8 +40,7 @@ builder.Services.AddSingleton<JwtService>();
 var app = builder.Build();
 
 // Configure middleware
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }

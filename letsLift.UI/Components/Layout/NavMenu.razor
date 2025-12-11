@@ -4,21 +4,20 @@
 <div class="nav-menu">
     <a href="/">Home</a>
 
-    @if (Auth.IsLoggedIn)
-    {
+    @if (Auth.IsLoggedIn) {
         <button @onclick="Logout" class="logout-btn">Logout (@Auth.Role)</button>
     }
-    else
-    {
+    else {
         <a href="/login">Login</a>
         <a href="/register">Register</a>
     }
 </div>
 
 @code {
-    private async Task Logout()
-    {
+
+    private async Task Logout() {
         await Auth.LogoutAsync();
         Nav.NavigateTo("/");
     }
+
 }

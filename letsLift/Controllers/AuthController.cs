@@ -5,25 +5,21 @@ namespace LetsLift.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController : ControllerBase
-{
-    private readonly UserRepository _users;
+public class AuthController : ControllerBase {
     private readonly JwtService _jwt;
+    private readonly UserRepository _users;
 
-    public AuthController(UserRepository users, JwtService jwt)
-    {
+    public AuthController(UserRepository users, JwtService jwt) {
         _users = users;
         _jwt = jwt;
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequestDto dto)
-    {
+    public async Task<IActionResult> Register(RegisterRequestDto dto) {
         var existing = await _users.GetByEmail(dto.Email);
         if (existing != null) return BadRequest("Email already in use");
 
-        var user = new User
-        {
+        var user = new User {
             Email = dto.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             Role = dto.Role
@@ -35,8 +31,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequestDto dto)
-    {
+    public async Task<IActionResult> Login(LoginRequestDto dto) {
         var user = await _users.GetByEmail(dto.Email);
         if (user == null) return Unauthorized("Invalid credentials");
 
