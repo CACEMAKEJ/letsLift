@@ -7,6 +7,7 @@
     <h1 class="title">Let’sLift</h1>
     <h3 class="subtitle">Create Account</h3>
 
+    <input type="text" @bind="name" placeholder="Your name" class="input-box"/>
     <input @bind="email" placeholder="Email" class="input-box"/>
     <input @bind="password" placeholder="Password" type="password" class="input-box"/>
 
@@ -23,13 +24,14 @@
 </div>
 
 @code {
+    private string name;
     private string email;
     private string password;
     private string role = "User";
     private string message;
 
     private async Task HandleRegister() {
-        var ok = await Auth.Register(email, password, role);
+        var ok = await Auth.Register(name, email, password, role);
 
         message = ok ? "Account created!" : "Registration failed";
 

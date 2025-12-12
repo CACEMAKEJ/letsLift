@@ -20,10 +20,11 @@ public class AuthService {
         return result.Token;
     }
 
-    public async Task<bool> Register(string email, string password, string role) {
+    public async Task<bool> Register(string name, string email, string password, string role) {
         var client = _factory.CreateClient("Api");
 
         var response = await client.PostAsJsonAsync("auth/register", new {
+            Name = name,
             Email = email,
             Password = password,
             Role = role

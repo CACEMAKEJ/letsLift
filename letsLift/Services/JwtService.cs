@@ -12,10 +12,11 @@ public class JwtService
         _key = config["Jwt:Key"];
     }
 
-    public string GenerateToken(string userId, string email, string role)
+    public string GenerateToken(string name, string userId, string email, string role)
     {
         var claims = new[]
         {
+            new Claim(ClaimTypes.Name, name),
             new Claim(JwtRegisteredClaimNames.Sub, userId),
             new Claim(ClaimTypes.Email, email),
             new Claim(ClaimTypes.Role, role)

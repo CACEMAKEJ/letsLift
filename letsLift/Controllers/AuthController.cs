@@ -20,6 +20,7 @@ public class AuthController : ControllerBase {
         if (existing != null) return BadRequest("Email already in use");
 
         var user = new User {
+            Name = dto.Name,
             Email = dto.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             Role = dto.Role
@@ -38,7 +39,7 @@ public class AuthController : ControllerBase {
         if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             return Unauthorized("Invalid credentials");
 
-        var token = _jwt.GenerateToken(user.Id, user.Email, user.Role);
+        var token = _jwt.GenerateToken(user.Name, user.Id, user.Email, user.Role);
 
         return Ok(new { token });
     }
