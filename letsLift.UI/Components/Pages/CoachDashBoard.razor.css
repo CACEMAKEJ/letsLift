@@ -1,0 +1,32 @@
+.primary-btn {
+    padding: 10px 20px;
+    background-color: #0077ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.session-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.session-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    background: #fafafa;
+}
+
+.free {
+    color: green;
+    font-weight: bold;
+}
+
+.booked {
+    color: red;
+    font-weight: bold;
+}

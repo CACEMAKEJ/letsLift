@@ -1,4 +1,5 @@
 using System.Text;
+using LetsLift.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
@@ -17,6 +18,7 @@ builder.Services.AddSingleton<IMongoClient>(sp => {
     return new MongoClient(conn);
 });
 
+
 // Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
@@ -33,6 +35,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 // App Services
+builder.Services.AddSingleton<BookingRepository>();
+
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<JwtService>();
 

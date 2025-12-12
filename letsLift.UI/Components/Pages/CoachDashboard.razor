@@ -1,0 +1,103 @@
+@page "/coach"
+@using System.Net.Http.Headers
+@inject HttpClient Api
+@inject AuthState Auth
+@inject NavigationManager Nav
+
+<h2>Your Training Sessions</h2>
+
+@if (!authReady) {
+    <p>Loading authentication…</p>
+}
+else if (!Auth.IsLoggedIn) {
+    <p style="color:red">You must be logged in as a coach.</p>
+}
+else if (error != null) {
+    <p style="color:red">@error</p>
+}
+else if (sessions == null) {
+    <p>Loading sessions…</p>
+}
+else if (sessions.Count == 0) {
+    <div>
+        <p>You haven't created any sessions yet.</p>
+        <button class="primary-btn" @onclick="GoToCreateSession">
+            + Create New Session
+        </button>
+    </div>
+}
+else {
+    <button class="primary-btn" @onclick="GoToCreateSession">
+        + Create New Session
+    </button>
+
+    <div class="session-list">
+        @foreach (var s in sessions) {
+            <div class="session-card">
+                <h3>@s.Description</h3>
+                <p><strong>Time:</strong> @s.StartTime.ToString("g")</p>
+
+                @if (string.IsNullOrEmpty(s.BookedByUserId)) {
+                    <p class="free">Status: Available</p>
+                }
+                else {
+                    <p class="booked">Booked by: @s.BookedByUserName</p>
+                }
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<BookingDto>? sessions;
+    private string? error;
+    private bool authReady;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+
+        await Auth.LoadAsync();
+        authReady = true;
+
+        if (!Auth.IsLoggedIn)
+        {
+            StateHasChanged();
+            return;
+        }
+
+        await LoadSessionsAsync();
+
+        StateHasChanged();
+    }
+
+    private async Task LoadSessionsAsync()
+    {
+        Api.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Auth.Token);
+
+        var response = await Api.GetAsync("api/bookings/mine");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            error = "Failed to load sessions.";
+        }
+        else
+        {
+            sessions = await response.Content.ReadFromJsonAsync<List<BookingDto>>();
+        }
+    }
+
+    private void GoToCreateSession() {
+        Nav.NavigateTo("/create-session");
+    }
+
+    public class BookingDto {
+        public string Id { get; set; }
+        public string? Description { get; set; }
+        public DateTime StartTime { get; set; }
+        public string? BookedByUserId { get; set; }
+        public string? BookedByUserName { get; set; }
+    }
+
+}
