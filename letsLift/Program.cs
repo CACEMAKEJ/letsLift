@@ -30,6 +30,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReact", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 // Authorization
 builder.Services.AddAuthorization();
 
@@ -41,6 +53,8 @@ builder.Services.AddSingleton<JwtService>();
 
 // Build AFTER adding services
 var app = builder.Build();
+
+app.UseCors("AllowReact");
 
 // Configure middleware
 if (app.Environment.IsDevelopment()) {
