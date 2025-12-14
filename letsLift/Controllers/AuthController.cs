@@ -28,7 +28,7 @@ public class AuthController : ControllerBase {
 
         await _users.Create(user);
 
-        return Ok("Account created");
+        return Ok(new { success = true });
     }
 
     [HttpPost("login")]
