@@ -1,5 +1,4 @@
 using System.Text;
-using LetsLift.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;

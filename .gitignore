@@ -4,6 +4,22 @@
 ## Get latest from `dotnet new gitignore`
 
 # dotenv files
+
+# Node
+node_modules/
+dist/
+.env
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+appsettings.Development.json
+
+# VS Code
+.vscode/
+
 .env
 
 # User-specific files
