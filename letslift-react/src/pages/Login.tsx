@@ -1,33 +1,74 @@
 import { useState } from "react";
-import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
-import "../styles/auth.css";
-
+import AuthContainer from "../components/AuthContainer";
+import { api } from "../api/api";
 
 export default function Login() {
-  const { login } = useAuth();
-  const nav = useNavigate();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  async function handleLogin() {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
     try {
-      await login(email, password);
-      nav("/");
+      const result = await api<{ token: string }>(
+        "/auth/login",
+        "POST",
+        { email, password }
+      );
+
+      localStorage.setItem("jwt", result.token);
+      navigate("/");
     } catch {
-      setError("Invalid credentials");
+      setError("Invalid email or password");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div>
-      <h2>Login</h2>
-      {error && <p>{error}</p>}
-      <input value={email} onChange={e => setEmail(e.target.value)} />
-      <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Login</button>
-    </div>
+    <AuthContainer
+      title="Let’sLift"
+      subtitle="Sign in to your account"
+    >
+      {error && <p className="auth-error">{error}</p>}
+
+      <form onSubmit={handleLogin} className="auth-form">
+        <input
+          className="auth-input"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+        />
+
+        <input
+          className="auth-input"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
+
+        <button className="auth-button" disabled={loading}>
+          {loading ? "Signing in..." : "Sign In"}
+        </button>
+      </form>
+
+      <p className="auth-switch">
+        Don’t have an account?{" "}
+        <span onClick={() => navigate("/register")}>
+          Create one
+        </span>
+      </p>
+    </AuthContainer>
   );
 }
