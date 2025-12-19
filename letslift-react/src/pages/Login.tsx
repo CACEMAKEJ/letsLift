@@ -34,7 +34,7 @@ export default function Login() {
 
   return (
     <AuthContainer
-      title="Let’sLift"
+      title="Let’s Lift"
       subtitle="Sign in to your account"
     >
       {error && <p className="auth-error">{error}</p>}

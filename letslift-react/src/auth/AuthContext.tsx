@@ -28,17 +28,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
-    if (!token) return;
 
-    const payload = decodeJwt(token);
-    const role = extractRole(payload);
+    if (token) {
+      const payload = decodeJwt(token);
 
-    if (role) {
-      setUser({ token, role });
+      if (payload.role) {
+        setUser({ token, role: payload.role });
+      }
     }
 
-        setLoading(false);
-
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -71,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   }
   if (loading) {
-      return <div>Initializing session…</div>;
+      return null;
   }
   return (
     <AuthContext.Provider value={{ user, loading, login, logout }}>

@@ -35,7 +35,7 @@ export default function Register() {
 
   return (
     <AuthContainer
-      title="Let’sLift"
+      title="Let’s Lift"
       subtitle="Create your account"
     >
       {error && <p className="auth-error">{error}</p>}

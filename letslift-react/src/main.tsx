@@ -3,13 +3,13 @@ import ReactDOM from "react-dom/client";
 import AppRouter from "./router";
 import { AuthProvider } from "./auth/AuthContext";
 import { BrowserRouter } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
+        <Navbar />
         <AppRouter />
       </BrowserRouter>
     </AuthProvider>
-  </React.StrictMode>
 );
