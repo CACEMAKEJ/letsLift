@@ -1,0 +1,42 @@
+@page "/register"
+@inject AuthService Auth
+@inject NavigationManager Nav
+@rendermode InteractiveServer
+
+<div class="auth-container">
+    <h1 class="title">Let’sLift</h1>
+    <h3 class="subtitle">Create Account</h3>
+
+    <input type="text" @bind="name" placeholder="Your name" class="input-box"/>
+    <input @bind="email" placeholder="Email" class="input-box"/>
+    <input @bind="password" placeholder="Password" type="password" class="input-box"/>
+
+    <select @bind="role" class="input-box">
+        <option value="User">Gym Member</option>
+        <option value="Coach">Coach</option>
+    </select>
+
+    <button @onclick="HandleRegister" class="primary-btn">Sign Up</button>
+
+    @if (message != null) {
+        <p>@message</p>
+    }
+</div>
+
+@code {
+    private string name;
+    private string email;
+    private string password;
+    private string role = "User";
+    private string message;
+
+    private async Task HandleRegister() {
+        var ok = await Auth.Register(name, email, password, role);
+
+        message = ok ? "Account created!" : "Registration failed";
+
+        if (ok)
+            Nav.NavigateTo("/login");
+    }
+
+}

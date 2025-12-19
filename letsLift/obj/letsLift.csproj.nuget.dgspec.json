@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/manin/RiderProjects/letsLift/letsLift/letsLift.csproj": {}
+    "/Users/manin/RiderProjects/letsLift/letsLift/letsLift.csproj": {}
   },
   "projects": {
-    "/home/manin/RiderProjects/letsLift/letsLift/letsLift.csproj": {
+    "/Users/manin/RiderProjects/letsLift/letsLift/letsLift.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/manin/RiderProjects/letsLift/letsLift/letsLift.csproj",
+        "projectUniqueName": "/Users/manin/RiderProjects/letsLift/letsLift/letsLift.csproj",
         "projectName": "letsLift",
-        "projectPath": "/home/manin/RiderProjects/letsLift/letsLift/letsLift.csproj",
-        "packagesPath": "/home/manin/.nuget/packages/",
-        "outputPath": "/home/manin/RiderProjects/letsLift/letsLift/obj/",
+        "projectPath": "/Users/manin/RiderProjects/letsLift/letsLift/letsLift.csproj",
+        "packagesPath": "/Users/manin/.nuget/packages/",
+        "outputPath": "/Users/manin/RiderProjects/letsLift/letsLift/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/manin/.nuget/NuGet/NuGet.Config"
+          "/Users/manin/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -43,6 +43,18 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[3.5.2, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
@@ -59,12 +71,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.22, 8.0.22]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -73,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

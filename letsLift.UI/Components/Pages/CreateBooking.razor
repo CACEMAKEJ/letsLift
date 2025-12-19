@@ -1,0 +1,76 @@
+@page "/create-booking"
+@inject IHttpClientFactory HttpClientFactory
+
+<h2>Create a Booking</h2>
+
+@if (successMessage != null)
+{
+    <p class="success">@successMessage</p>
+}
+
+@if (errorMessage != null)
+{
+    <p class="error">@errorMessage</p>
+}
+
+<div class="booking-form">
+
+    <label>Coach Name</label>
+    <input @bind="coachName" />
+
+    <label>Your Name</label>
+    <input @bind="clientName" />
+
+    <label>Date & Time</label>
+    <input type="datetime-local" @bind="startTime" />
+
+    <label>Description</label>
+    <textarea @bind="description"></textarea>
+
+    <button class="primary-btn" @onclick="SubmitBooking">Create Booking</button>
+</div>
+
+@code {
+    private string coachName;
+    private string clientName;
+    private DateTime startTime = DateTime.Now;
+    private string description;
+
+    private string errorMessage;
+    private string successMessage;
+
+    private async Task SubmitBooking()
+    {
+        errorMessage = null;
+        successMessage = null;
+
+        var dto = new
+        {
+            CoachName = coachName,
+            ClientName = clientName,
+            StartTime = startTime,
+            Description = description
+        };
+
+        var Api = HttpClientFactory.CreateClient("Api");
+
+        var response = await Api.PostAsJsonAsync("bookings/create", dto);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            errorMessage = "Could not create booking.";
+            return;
+        }
+
+        successMessage = "Booking created!";
+        ClearForm();
+    }
+
+    private void ClearForm()
+    {
+        coachName = "";
+        clientName = "";
+        description = "";
+        startTime = DateTime.Now;
+    }
+}

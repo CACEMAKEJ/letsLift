@@ -1,0 +1,29 @@
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+}
+
+.booking-form input,
+.booking-form textarea {
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.primary-btn {
+    background: #4CAF50;
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
