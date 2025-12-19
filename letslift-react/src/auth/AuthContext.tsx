@@ -40,10 +40,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-  console.log("AuthContext user:", user);
-  }, [user]);
-
   async function login(email: string, password: string) {
     const res = await api<{ token: string }>(
       "/auth/login",
