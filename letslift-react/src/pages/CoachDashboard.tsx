@@ -1,40 +1,58 @@
 import { useEffect, useState } from "react";
-import { api } from "../api/client";
-import type { Booking } from "../types/Booking";
 import { useNavigate } from "react-router-dom";
+import { api } from "../api/api";
+import { useAuth } from "../auth/AuthContext";
+
+type BookingDto = {
+  id: string;
+  startTime: string;
+  description: string;
+  bookedByUserName?: string | null;
+};
 
 export default function CoachDashboard() {
-  const [sessions, setSessions] = useState<Booking[]>([]);
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const nav = useNavigate();
+  const [sessions, setSessions] = useState<BookingDto[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  async function load() {
+    try {
+      const data = await api<BookingDto[]>("/bookings/coach", "GET", undefined, user!.token);
+      setSessions(data);
+    } catch {
+      setError("Failed to load sessions");
+    }
+  }
+
+  async function deleteSession(id: string) {
+    await api(`/bookings/${id}`, "DELETE", undefined, user!.token);
+    await load();
+  }
 
   useEffect(() => {
-    api.get<Booking[]>("/bookings/coach")
-      .then(res => setSessions(res.data))
-      .catch(() => alert("Failed to load sessions"));
+    load();
   }, []);
 
   return (
     <div className="page">
-      <h1>Your Sessions</h1>
+      <h2>Coach Dashboard</h2>
 
-      <button className="primary-btn" onClick={() => navigate("/create-session")}>
+      <button onClick={() => nav("/coach/create")}>
         + Create Session
       </button>
 
-      {sessions.length === 0 && <p>No sessions yet.</p>}
+      {error && <p>{error}</p>}
 
-      {sessions.map(s => (
-        <div key={s.id} className="card">
-          <h3>{new Date(s.startTime).toLocaleString()}</h3>
-          <p>{s.description}</p>
+      {sessions.map((s) => (
+        <div className="card" key={s.id}>
+          <div>{new Date(s.startTime).toLocaleString()}</div>
+          <div>{s.description}</div>
+          <div>
+            {s.bookedByUserName ? `Booked by: ${s.bookedByUserName}` : "Available"}
+          </div>
 
-          {s.bookedByUserName ? (
-            <span className="badge booked">
-              Booked by {s.bookedByUserName}
-            </span>
-          ) : (
-            <span className="badge open">Available</span>
-          )}
+          <button onClick={() => deleteSession(s.id)}>Delete</button>
         </div>
       ))}
     </div>

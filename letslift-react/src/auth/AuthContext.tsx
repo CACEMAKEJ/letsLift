@@ -5,6 +5,7 @@ import type { AuthUser } from "../auth/Auth";
 
 type AuthContextType = {
   user: AuthUser | null;
+  loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 };
@@ -22,6 +23,8 @@ function extractRole(payload: any): AuthUser["role"] | null {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -33,7 +36,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (role) {
       setUser({ token, role });
     }
+
+        setLoading(false);
+
   }, []);
+
+  useEffect(() => {
+  console.log("AuthContext user:", user);
+  }, [user]);
 
   async function login(email: string, password: string) {
     const res = await api<{ token: string }>(
@@ -60,9 +70,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem("role");
     setUser(null);
   }
-
+  if (loading) {
+      return <div>Initializing session…</div>;
+  }
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
